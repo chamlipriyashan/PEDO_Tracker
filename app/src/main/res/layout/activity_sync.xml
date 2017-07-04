@@ -28,11 +28,11 @@
 
     <TextView
         android:id="@+id/status_text"
-        android:layout_width="331dp"
-        android:layout_height="143dp"
+        android:layout_width="329dp"
+        android:layout_height="371dp"
         android:text="STATUS"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="31dp"
-        android:layout_marginLeft="15dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginLeft="16dp"
         app:layout_constraintLeft_toLeftOf="parent" />
 </android.support.constraint.ConstraintLayout>

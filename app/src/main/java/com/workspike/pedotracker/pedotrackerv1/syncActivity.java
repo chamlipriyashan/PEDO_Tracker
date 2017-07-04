@@ -1,5 +1,6 @@
 package com.workspike.pedotracker.pedotrackerv1;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.ListActivity;
 import android.bluetooth.BluetoothAdapter;
@@ -20,6 +21,8 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Handler;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -62,7 +65,7 @@ public class syncActivity extends AppCompatActivity {
             public void onClick(View v) {
                 status.setText(" ");
                 //scanDevice();
-
+                scanLeDevice(true);
             }
         });
 
@@ -73,7 +76,7 @@ public class syncActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //scanLeDevice(false);
                 status.setText(" ");
-
+                scanLeDevice(false);
             }
         });
 
@@ -86,6 +89,32 @@ public class syncActivity extends AppCompatActivity {
         final BluetoothManager bluetoothManager =
                 (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
         mBluetoothAdapter = bluetoothManager.getAdapter();
+
+        if (ContextCompat.checkSelfPermission(syncActivity.this,
+                Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(syncActivity.this,
+                    Manifest.permission.ACCESS_FINE_LOCATION)) {
+
+                // Show an explanation to the user *asynchronously* -- don't block
+                // this thread waiting for the user's response! After the user
+                // sees the explanation, try again to request the permission.
+
+            } else {
+
+                // No explanation needed, we can request the permission.
+
+                ActivityCompat.requestPermissions(syncActivity.this,
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                       5);
+
+                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
+                // app-defined int constant. The callback method gets the
+                // result of the request.
+            }
+        }
 
     }
 
@@ -171,6 +200,8 @@ public class syncActivity extends AppCompatActivity {
         public void onScanResult(int callbackType, ScanResult result) {
             Log.i("callbackType", String.valueOf(callbackType));
             Log.i("result", result.toString());
+            System.out.println( result.toString());
+            status.setText(result.toString());
             BluetoothDevice btDevice = result.getDevice();
             connectToDevice(btDevice);
         }
@@ -179,12 +210,14 @@ public class syncActivity extends AppCompatActivity {
         public void onBatchScanResults(List<ScanResult> results) {
             for (ScanResult sr : results) {
                 Log.i("ScanResult - Results", sr.toString());
+                status.setText(sr.toString());
             }
         }
 
         @Override
         public void onScanFailed(int errorCode) {
             Log.e("Scan Failed", "Error Code: " + errorCode);
+            status.setText("error scanning");
         }
     };
 
@@ -197,6 +230,7 @@ public class syncActivity extends AppCompatActivity {
                         @Override
                         public void run() {
                             Log.i("onLeScan", device.toString());
+                            System.out.println(device.toString());
                             connectToDevice(device);
                         }
                     });
