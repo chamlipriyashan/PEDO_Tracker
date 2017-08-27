@@ -1,13 +1,13 @@
-package com.workspike.pedotracker.pedotrackerv1;
+package com.workspike.pedotracker.pedotrackerv1.my_clases;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import android.content.Intent;
-import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.Window;
 import android.view.WindowManager;
+
+import com.workspike.pedotracker.pedotrackerv1.my_clases.MainActivity;
 
 public class SplashActivity extends AppCompatActivity {
 

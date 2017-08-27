@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.workspike.pedotracker.pedotrackerv1;
+package com.workspike.pedotracker.pedotrackerv1.not_used;
 
 import android.app.Activity;
 import android.bluetooth.BluetoothGattCharacteristic;
@@ -38,6 +38,10 @@ import java.util.List;
 import java.util.UUID;
 
 import android.widget.SeekBar;
+
+import com.workspike.pedotracker.pedotrackerv1.BluetoothLeService;
+import com.workspike.pedotracker.pedotrackerv1.R;
+import com.workspike.pedotracker.pedotrackerv1.SampleGattAttributes;
 
 /**
  * For a given BLE device, this Activity provides the user interface to connect, display data,

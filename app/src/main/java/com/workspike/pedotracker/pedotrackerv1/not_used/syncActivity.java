@@ -1,8 +1,7 @@
-package com.workspike.pedotracker.pedotrackerv1;
+package com.workspike.pedotracker.pedotrackerv1.not_used;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.ListActivity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGatt;
@@ -16,33 +15,33 @@ import android.bluetooth.le.ScanCallback;
 import android.bluetooth.le.ScanFilter;
 import android.bluetooth.le.ScanResult;
 import android.bluetooth.le.ScanSettings;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Handler;
+import android.os.IBinder;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.workspike.pedotracker.pedotrackerv1.BluetoothLeService;
+import com.workspike.pedotracker.pedotrackerv1.R;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 public class syncActivity extends AppCompatActivity {
     TextView status;
+    private final static String TAG = DeviceControlActivity.class.getSimpleName();
     private BluetoothAdapter mBluetoothAdapter;
     private int REQUEST_ENABLE_BT = 1;
     private Handler mHandler;
@@ -51,6 +50,30 @@ public class syncActivity extends AppCompatActivity {
     private ScanSettings settings;
     private List<ScanFilter> filters;
     private BluetoothGatt mGatt;
+    private BluetoothLeService mBluetoothLeService;
+    private String mDeviceAddress;
+
+
+    private final ServiceConnection mServiceConnection = new ServiceConnection() {
+
+        @Override
+        public void onServiceConnected(ComponentName componentName, IBinder service) {
+            mBluetoothLeService = ((BluetoothLeService.LocalBinder) service).getService();
+            if (!mBluetoothLeService.initialize()) {
+                Log.e(TAG, "Unable to initialize Bluetooth");
+                finish();
+            }
+            // Automatically connects to the device upon successful start-up initialization.
+            mBluetoothLeService.connect(mDeviceAddress);
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName componentName) {
+            mBluetoothLeService = null;
+        }
+    };
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,6 +138,13 @@ public class syncActivity extends AppCompatActivity {
                 // result of the request.
             }
         }
+
+
+
+        Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
+        bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
+
+
 
     }
 
@@ -311,8 +341,8 @@ public class syncActivity extends AppCompatActivity {
 
     }
 
-    public class DeviceScanActivity extends ListActivity {
-        private com.workspike.pedotracker.pedotrackerv1.DeviceScanActivity.LeDeviceListAdapter mLeDeviceListAdapter;
+    public class DeviceScanActivityori extends ListActivity {
+        private com.workspike.pedotracker.pedotrackerv1.not_used.DeviceScanActivityori.LeDeviceListAdapter mLeDeviceListAdapter;
         private BluetoothAdapter mBluetoothAdapter;
         private boolean mScanning;
         private Handler mHandler;

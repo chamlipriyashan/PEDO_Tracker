@@ -30,4 +30,8 @@
     <string name="red_slide">Red</string>
     <string name="blue_slide">Blue</string>
     <string name="green_slide">Green</string>
+    <string name="help">help</string>
+    <string name="locked">locked</string>
+    <string name="refresh">refresh</string>
+    <string name="connected_disconnected">Connected/Disconnected</string>
 </resources>
