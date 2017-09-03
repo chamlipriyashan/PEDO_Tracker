@@ -39,9 +39,9 @@
             </intent-filter>
         </activity>
         <activity
-            android:theme="@style/AppTheme"
             android:name=".not_used.DeviceScanActivityori"
-            android:label="@string/app_name" />
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme" />
         <activity android:name=".my_clases.MainActivity" />
         <activity android:name=".not_used.DeviceControlActivity" />
 
@@ -50,12 +50,12 @@
             android:enabled="true" />
 
         <activity android:name=".not_used.syncActivity" />
-
-        <activity android:name=".DeviceScanActivity"
-            android:theme="@style/AppTheme"
-            android:label="Scan Trackers" >
-
-        </activity>
+        <activity
+            android:name=".DeviceScanActivity"
+            android:label="Scan Trackers"
+            android:theme="@style/AppTheme" />
+        <activity android:name=".DrawActivity" />
+        <activity android:name=".Test"></activity>
     </application>
 
 </manifest>

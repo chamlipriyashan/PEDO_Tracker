@@ -14,6 +14,10 @@
         android:title="@string/refresh"
         app:showAsAction="ifRoom" />
 
+    <item android:id="@+id/action_new"
+        android:icon="@android:drawable/ic_menu_help"
+        android:title="New"
+        app:showAsAction="never"/>
     <!-- Help -->
     <item android:id="@+id/action_help"
         android:icon="@android:drawable/ic_menu_help"

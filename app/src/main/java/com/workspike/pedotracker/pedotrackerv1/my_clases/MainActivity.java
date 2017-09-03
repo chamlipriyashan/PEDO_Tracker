@@ -21,6 +21,8 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.workspike.pedotracker.pedotrackerv1.BluetoothLeService;
+import com.workspike.pedotracker.pedotrackerv1.DrawActivity;
+import com.workspike.pedotracker.pedotrackerv1.Test;
 import com.workspike.pedotracker.pedotrackerv1.not_used.DeviceControlActivity;
 import com.workspike.pedotracker.pedotrackerv1.DeviceScanActivity;
 import com.workspike.pedotracker.pedotrackerv1.R;
@@ -119,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         TextView status = (TextView) findViewById(R.id.connected_status);
-      tv_console = (TextView) findViewById(R.id.tv_console);
+        tv_console = (TextView) findViewById(R.id.tv_console);
         mConnectionState = (TextView) findViewById(R.id.connection_state);
 
         Button sync_button=(Button)findViewById(R.id.sync_button);
@@ -200,6 +202,11 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             case R.id.menu_disconnect:
                 mBluetoothLeService.disconnect();
+                return true;
+            case R.id.action_new:
+
+                final Intent intent = new Intent(this, Test.class);
+                startActivity(intent);
                 return true;
             case android.R.id.home:
                 onBackPressed();
