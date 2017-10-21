@@ -122,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        super.onCreate(savedInstanceState);g
         setContentView(R.layout.activity_main);
         TextView status = (TextView) findViewById(R.id.connected_status);
         tv_console = (TextView) findViewById(R.id.tv_console);
