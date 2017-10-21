@@ -20,4 +20,22 @@
         android:layout_marginTop="11dp">
     </RelativeLayout>
 
+    <TextView
+        android:id="@+id/tv_console"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_weight="1"
+        android:text="@string/console"
+        android:layout_below="@+id/canvas"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="33dp" />
+
+    <TextView android:id="@+id/connection_state"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/disconnected"
+        android:textSize="18sp"/>
+
 </RelativeLayout>

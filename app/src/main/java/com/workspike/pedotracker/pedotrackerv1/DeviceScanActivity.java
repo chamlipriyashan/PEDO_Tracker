@@ -122,7 +122,7 @@ public class DeviceScanActivity extends ActionBarListActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_scan, menu);
-        menu.findItem(R.id.action_logout).setVisible(true);
+
         if (!mScanning) {
             menu.findItem(R.id.menu_stop).setVisible(false);
             menu.findItem(R.id.menu_scan).setVisible(true);

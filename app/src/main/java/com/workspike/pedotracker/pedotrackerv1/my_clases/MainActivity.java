@@ -1,6 +1,7 @@
 
 package com.workspike.pedotracker.pedotrackerv1.my_clases;
 
+import android.app.Activity;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattService;
 import android.content.BroadcastReceiver;
@@ -18,6 +19,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -37,10 +39,13 @@ import java.util.List;
 import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity {
- Button sync_button;
+    Button sync_button;
     private final static String TAG = DeviceControlActivity.class.getSimpleName();
     String bt_device_name=" ";
     String bt_device_id=" ";
+    static String fulltext="testttttttttttttttttttttttttttttttttttttstststststststststtsstst";
+   TextView myTextView;
+    ScrollView consolescroll;
     public static final String EXTRAS_DEVICE_NAME = "DEVICE_NAME";
     public static final String EXTRAS_DEVICE_ADDRESS = "DEVICE_ADDRESS";
     private String mDeviceName;
@@ -52,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean mConnected = false;
     private BluetoothGattCharacteristic characteristicTX;
     private BluetoothGattCharacteristic characteristicRX;
-    private TextView mConnectionState;
+   // private TextView mConnectionState;
     private  TextView tv_console;
 
     public final static UUID HM_RX_TX =
@@ -81,12 +86,7 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-    // Handles various events fired by the Service.
-    // ACTION_GATT_CONNECTED: connected to a GATT server.
-    // ACTION_GATT_DISCONNECTED: disconnected from a GATT server.
-    // ACTION_GATT_SERVICES_DISCOVERED: discovered GATT services.
-    // ACTION_DATA_AVAILABLE: received data from the device.  This can be a result of read
-    //                        or notification operations.
+
     private final BroadcastReceiver mGattUpdateReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -126,7 +126,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         TextView status = (TextView) findViewById(R.id.connected_status);
         tv_console = (TextView) findViewById(R.id.tv_console);
-        mConnectionState = (TextView) findViewById(R.id.connection_state);
+        myTextView = (TextView) findViewById(R.id.tv_pconsole);
+        consolescroll =(ScrollView) findViewById(R.id.consolescroll);
+       // mConnectionState = (TextView) findViewById(R.id.connection_state);
         this.setRequestedOrientation(
                 ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         Button sync_button=(Button)findViewById(R.id.sync_button);
@@ -184,6 +186,7 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
         unbindService(mServiceConnection);
         mBluetoothLeService = null;
+        mConnected=false;
     }
 
     @Override
@@ -198,6 +201,8 @@ public class MainActivity extends AppCompatActivity {
         }
         return true;
     }
+
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -241,7 +246,8 @@ public class MainActivity extends AppCompatActivity {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                mConnectionState.setText(resourceId);
+              //  mConnectionState.setText(resourceId);
+                System.out.println(resourceId);
             }
         });
     }
@@ -249,7 +255,24 @@ public class MainActivity extends AppCompatActivity {
     private void displayData(String data) {
 
         if (data != null) {
-            tv_console.setText(data);
+           // tv_console.setText(data);
+
+
+
+
+            if(fulltext.length()>=500){
+                int index = fulltext.length()/2;
+                fulltext.substring(0, index);
+                fulltext+= "\n" + data;
+
+                myTextView.setText(fulltext);
+            }else{
+                fulltext += "\n" + data;
+
+                myTextView.setText(fulltext);
+            }
+            consolescroll.fullScroll(View.FOCUS_DOWN);
+
            // System.out.println(data);//**********************************************************************************
         }
     }

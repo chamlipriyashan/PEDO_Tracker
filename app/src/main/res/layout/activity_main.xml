@@ -7,33 +7,6 @@
     tools:context="com.workspike.pedotracker.pedotrackerv1.my_clases.MainActivity">
 
 
-    <LinearLayout android:orientation="horizontal"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="8dp"
-        android:id="@+id/linearLayout"
-        android:layout_marginRight="8dp"
-        app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginLeft="8dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp">
-        <TextView android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/label_state"
-            android:textSize="18sp"/>
-        <Space android:layout_width="5dp"
-            android:layout_height="wrap_content"/>
-        <TextView android:id="@+id/connection_state"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/disconnected"
-            android:textSize="18sp"/>
-    </LinearLayout>
-
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -44,17 +17,6 @@
         android:layout_marginLeft="8dp"
         app:layout_constraintLeft_toLeftOf="parent"
         android:layout_marginStart="8dp"
-        tools:ignore="RtlHardcoded" />
-
-    <Button
-        android:id="@+id/sync_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/sync_with_tracker"
-        android:layout_marginLeft="16dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginStart="16dp"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
         tools:ignore="RtlHardcoded" />
 
     <TextView
@@ -69,38 +31,100 @@
         android:layout_marginStart="8dp"
         tools:ignore="RtlHardcoded" />
 
-    <SeekBar
-        android:id="@+id/seekRed"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:isScrollContainer="false"
-        android:minHeight="52dp"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sync_button" />
-
     <TextView
         android:id="@+id/tv_console"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:layout_weight="1"
         android:text="@string/console"
         app:layout_constraintBottom_toTopOf="@+id/connected_status"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/seekRed"
-        app:layout_constraintVertical_bias="0.13" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+        app:layout_constraintVertical_bias="0.129" />
+
+
+    <ScrollView
+        android:id="@+id/consolescroll"
+        android:layout_width="0dp"
+        android:layout_height="250dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_weight="1"
+        app:layout_constraintBottom_toTopOf="@+id/connected_status"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_console">
+
+        <TextView
+            android:id="@+id/tv_pconsole"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+      <!--  <TextView
+            android:id="@+id/connection_state"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/disconnected"
+            android:textSize="18sp" />-->
+
+        <SeekBar
+            android:id="@+id/seekRed"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="0dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="0dp"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="0dp"
+            android:layout_weight="0"
+            android:isScrollContainer="false"
+            android:minHeight="30dp"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+
+        <Button
+            android:id="@+id/sync_button"
+            android:layout_width="100dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="0dp"
+            android:layout_marginStart="0dp"
+            android:text="@string/sync_with_tracker"
+            android:textSize="8sp"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            tools:ignore="RtlHardcoded"
+            tools:layout_editor_absoluteY="72dp" />
+
+    </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>
