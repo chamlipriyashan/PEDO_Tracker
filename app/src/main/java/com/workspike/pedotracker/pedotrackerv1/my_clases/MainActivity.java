@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.content.pm.ActivityInfo;
 import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -21,8 +22,10 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.workspike.pedotracker.pedotrackerv1.BluetoothLeService;
-import com.workspike.pedotracker.pedotrackerv1.DrawActivity;
-import com.workspike.pedotracker.pedotrackerv1.Test;
+import com.workspike.pedotracker.pedotrackerv1.DrawDynamicPathActivity;
+import com.workspike.pedotracker.pedotrackerv1.draw_traking_path_test.DrawVectorActivity;
+import com.workspike.pedotracker.pedotrackerv1.draw_traking_path_test.ManualMapDraw;
+import com.workspike.pedotracker.pedotrackerv1.Test2Activity;
 import com.workspike.pedotracker.pedotrackerv1.not_used.DeviceControlActivity;
 import com.workspike.pedotracker.pedotrackerv1.DeviceScanActivity;
 import com.workspike.pedotracker.pedotrackerv1.R;
@@ -43,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
     private String mDeviceName;
     private String mDeviceAddress;
     private SeekBar mRed;
+    int SendValue=0;
     private int[] RGBFrame = {0,0,0};
     private BluetoothLeService mBluetoothLeService;
     private boolean mConnected = false;
@@ -123,7 +127,8 @@ public class MainActivity extends AppCompatActivity {
         TextView status = (TextView) findViewById(R.id.connected_status);
         tv_console = (TextView) findViewById(R.id.tv_console);
         mConnectionState = (TextView) findViewById(R.id.connection_state);
-
+        this.setRequestedOrientation(
+                ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         Button sync_button=(Button)findViewById(R.id.sync_button);
         sync_button.setOnClickListener(new View.OnClickListener() {
 
@@ -203,11 +208,28 @@ public class MainActivity extends AppCompatActivity {
             case R.id.menu_disconnect:
                 mBluetoothLeService.disconnect();
                 return true;
-            case R.id.action_new:
 
-                final Intent intent = new Intent(this, Test.class);
+            case R.id.action_manualdraw:
+                final Intent intent = new Intent(this, ManualMapDraw.class);
                 startActivity(intent);
                 return true;
+
+
+            case R.id.action_vector_draw:
+                final Intent intent2 = new Intent(this, DrawVectorActivity.class);
+                startActivity(intent2);
+                return true;
+
+            case R.id.action_test1:
+                final Intent intent3 = new Intent(this, Test2Activity.class);
+                startActivity(intent3);
+                return true;
+
+            case R.id.action_test2:
+               final Intent intent4 = new Intent(this, DrawDynamicPathActivity.class);
+                startActivity(intent4);
+                return true;
+
             case android.R.id.home:
                 onBackPressed();
                 return true;
@@ -228,7 +250,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (data != null) {
             tv_console.setText(data);
-            System.out.println("my data"+data);
+           // System.out.println(data);//**********************************************************************************
         }
     }
 
@@ -282,6 +304,7 @@ public class MainActivity extends AppCompatActivity {
             public void onProgressChanged(SeekBar seekBar, int progress,
                                           boolean fromUser) {
                 RGBFrame[pos]=progress;
+                SendValue=progress;
             }
 
             @Override
@@ -298,13 +321,13 @@ public class MainActivity extends AppCompatActivity {
     }
     // on change of bars write char
     private void makeChange() {
-        String str = RGBFrame[0] + "\n";
-        Log.d(TAG, "Sending result=" + str);
+        String str = SendValue + "\n";
+        Log.d(TAG, "Sending result=" + SendValue);
         //Log.d(TAG, "Sending result=" + str);
         final byte[] tx = str.getBytes();
-        System.out.println(tx);
+        System.out.println(SendValue);
         if(mConnected) {
-            characteristicTX.setValue(tx);
+            characteristicTX.setValue(String.valueOf(str));
             mBluetoothLeService.writeCharacteristic(characteristicTX);
             mBluetoothLeService.setCharacteristicNotification(characteristicRX,true);
             byte[] val;

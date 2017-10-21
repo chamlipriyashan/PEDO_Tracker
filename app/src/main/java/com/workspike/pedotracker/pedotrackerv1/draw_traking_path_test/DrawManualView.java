@@ -1,4 +1,4 @@
-package com.workspike.pedotracker.pedotrackerv1;
+package com.workspike.pedotracker.pedotrackerv1.draw_traking_path_test;
 
 /**
  * Created by Chamli Priyashan on 8/27/2017.
@@ -16,7 +16,7 @@ import android.view.MotionEvent;
 import android.view.View;
 
 
-public class DrawView extends View {
+public class DrawManualView extends View {
     Paint       mPaint;
     //MaskFilter  mEmboss;
     //MaskFilter  mBlur;
@@ -26,7 +26,7 @@ public class DrawView extends View {
     Paint   mBitmapPaint;
     float w = 400;
     float h = 800;
-    public DrawView(Context context) {
+    public DrawManualView(Context context) {
         super(context);
         // TODO Auto-generated constructor stub
         mPaint = new Paint();
@@ -44,8 +44,8 @@ public class DrawView extends View {
     }
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        super.onSizeChanged(w, h, oldw, oldh);
-        mBitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
+        super.onSizeChanged(500, 600, oldw, oldh);
+        mBitmap = Bitmap.createBitmap(500, 600, Bitmap.Config.ARGB_8888);
         mCanvas = new Canvas(mBitmap);
     }
     @Override

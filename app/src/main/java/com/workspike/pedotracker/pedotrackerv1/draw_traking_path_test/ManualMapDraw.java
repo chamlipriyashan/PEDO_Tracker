@@ -1,5 +1,4 @@
-package com.workspike.pedotracker.pedotrackerv1;
-import java.io.FileNotFoundException;
+package com.workspike.pedotracker.pedotrackerv1.draw_traking_path_test;
 
 import android.Manifest;
 import android.app.Activity;
@@ -13,9 +12,7 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
-import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -28,7 +25,9 @@ import android.graphics.Bitmap.CompressFormat;
 import android.provider.MediaStore.Images.Media;
 import android.widget.Toast;
 
-public class Test extends Activity implements OnClickListener,
+import com.workspike.pedotracker.pedotrackerv1.R;
+
+public class ManualMapDraw extends Activity implements OnClickListener,
         OnTouchListener {
 
     private static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 0;
@@ -49,7 +48,7 @@ public class Test extends Activity implements OnClickListener,
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_test);
+        setContentView(R.layout.activity_draw_manual);
 
         choosenImageView = (ImageView) this.findViewById(R.id.ChoosenImageView);
         choosePicture = (Button) this.findViewById(R.id.ChoosePictureButton);

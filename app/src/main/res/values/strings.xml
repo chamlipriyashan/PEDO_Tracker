@@ -34,4 +34,7 @@
     <string name="locked">locked</string>
     <string name="refresh">refresh</string>
     <string name="connected_disconnected">Connected/Disconnected</string>
+    <string name="console">Console</string>
+    <string name="status">STATUS :</string>
+    <string name="sync_with_tracker">Sync with Tracker</string>
 </resources>

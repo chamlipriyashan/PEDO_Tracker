@@ -1,4 +1,4 @@
-package com.workspike.pedotracker.pedotrackerv1;
+package com.workspike.pedotracker.pedotrackerv1.not_used;
 
 import android.content.Context;
 import android.graphics.Canvas;
