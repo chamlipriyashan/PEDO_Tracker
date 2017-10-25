@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.pm.ActivityInfo;
+import android.os.Handler;
 import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -65,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
 
     private final String LIST_NAME = "NAME";
     private final String LIST_UUID = "UUID";
-
+    final Handler handler = new Handler();
     // Code to manage Service lifecycle.
     private final ServiceConnection mServiceConnection = new ServiceConnection() {
 
@@ -122,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);g
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         TextView status = (TextView) findViewById(R.id.connected_status);
         tv_console = (TextView) findViewById(R.id.tv_console);
@@ -159,7 +160,15 @@ public class MainActivity extends AppCompatActivity {
         Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
         bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
 
+
+
+        for (int i = 0; i < 100; i++) {
+            arr.add("0");
+        }
+
+
     }
+
 
 
 
@@ -252,28 +261,26 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    ArrayList<String> arr= new ArrayList<String>(100);
+
+
     private void displayData(String data) {
 
         if (data != null) {
-           // tv_console.setText(data);
 
+                String previousString = myTextView.getText().toString();
+                String nextString = previousString + "\n" + data;
+               // myTextView.setText(nextString);
+            if(nextString.length()>1100){
 
-
-
-            if(fulltext.length()>=500){
-                int index = fulltext.length()/2;
-                fulltext.substring(0, index);
-                fulltext+= "\n" + data;
-
-                myTextView.setText(fulltext);
+                myTextView.append(nextString,(nextString.length()-100),(nextString.length()));
+                consolescroll.fullScroll(View.FOCUS_DOWN);
+               // System.out.println("g");
             }else{
-                fulltext += "\n" + data;
-
-                myTextView.setText(fulltext);
+                myTextView.setText(nextString);
+                consolescroll.fullScroll(View.FOCUS_DOWN);
             }
-            consolescroll.fullScroll(View.FOCUS_DOWN);
 
-           // System.out.println(data);//**********************************************************************************
         }
     }
 
@@ -350,18 +357,22 @@ public class MainActivity extends AppCompatActivity {
         final byte[] tx = str.getBytes();
         System.out.println(SendValue);
         if(mConnected) {
-            characteristicTX.setValue(String.valueOf(str));
-            mBluetoothLeService.writeCharacteristic(characteristicTX);
-            mBluetoothLeService.setCharacteristicNotification(characteristicRX,true);
-            byte[] val;
+            if(characteristicTX==null){
+                System.out.println("Disconnect the device and re connect man!  or RETRY");
+            }else {
+                characteristicTX.setValue(String.valueOf(str));
+                mBluetoothLeService.writeCharacteristic(characteristicTX);
+                mBluetoothLeService.setCharacteristicNotification(characteristicRX, true);
+                byte[] val;
 
 
-           // val=characteristicRX.getValue();
-           // String s=new String(val.toString());
-           // System.out.println(s);
+                //  System.out.println( fulltext);
+                // val=characteristicRX.getValue();
+                // String s=new String(val.toString());
+                // System.out.println(s);
 
 
-
+            }
         }
     }
 

@@ -58,7 +58,7 @@
         <activity android:name=".draw_traking_path_test.ManualMapDraw" />
         <activity android:name=".draw_traking_path_test.DrawVectorActivity" />
         <activity android:name=".Test2Activity"
-            android:label="Test1"/>
+            android:label="Test2"/>
         <activity android:name=".DrawDynamicPathActivity">
 
         </activity>

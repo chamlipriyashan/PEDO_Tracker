@@ -214,8 +214,8 @@ public class Test2Activity extends AppCompatActivity {
     private void displayData(String data) {
 
         if (data != null) {
-            tv_console.setText(data);
-            // System.out.println(data);//**********************************************************************************
+            tv_console.append(data);
+             System.out.println(data);//**********************************************************************************
         }
     }
 
@@ -273,12 +273,12 @@ public class Test2Activity extends AppCompatActivity {
                 // in the coordinates of the canvas
                 canvas.drawLine(dataX[i], h / 2 - dataY[i], dataX[i + 1], h / 2 - dataY[i + 1], paint);
                 canvas.drawColor(Color.WHITE, PorterDuff.Mode.MULTIPLY);
-                try {
-                    Thread.sleep(10);
-                } catch (InterruptedException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
+//                try {
+//                    Thread.sleep(10);
+//                } catch (InterruptedException e) {
+//                    // TODO Auto-generated catch block
+//                    e.printStackTrace();
+//                }
                 invalidate();
             }
 
