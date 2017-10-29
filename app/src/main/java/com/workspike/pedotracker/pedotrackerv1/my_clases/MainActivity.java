@@ -44,12 +44,19 @@ import com.workspike.pedotracker.pedotrackerv1.R;
 import com.workspike.pedotracker.pedotrackerv1.SampleGattAttributes;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity {
+
+    int globle_i =1;
+    int[] mydataX = new int[1001];
+    int[] mydataY = new int[1001];
+
+
     Button sync_button;
     private final static String TAG = DeviceControlActivity.class.getSimpleName();
     String bt_device_name=" ";
@@ -128,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
+    MainActivity.HeartGraphView v;
 
 
     @Override
@@ -156,7 +163,7 @@ public class MainActivity extends AppCompatActivity {
 
         RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.canvas2);
         RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.FILL_PARENT);
-        MainActivity.HeartGraphView v = new MainActivity.HeartGraphView(this);
+         v = new MainActivity.HeartGraphView(this);
         v.setLayoutParams(lp);
         relativeLayout.addView(v);
 
@@ -277,13 +284,36 @@ public class MainActivity extends AppCompatActivity {
 //    String previousString7="";
 //    String previousString8="";
 
+int angle=0;
+
     private void displayData(String data) {
 
         if (data != null) {
 
 
+
+                List<String> items = Arrays.asList(data.split(","));
+              //  String[] animalsArray = data.split("\\s*,\\s*");
+              //  String   aa= (items.get(1));
+              //  String bb= (items.get(2));
+              //  System.out.println(animalsArray[0] +"  ---  "+animalsArray[1]+"     " + animalsArray[2]  );
+
+
+            int length_ofpath= Integer.parseInt(items.get(0));
+            int angle360= Integer.parseInt(items.get(1));
+
+                System.out.println(length_ofpath);
+                System.out.println(angle360);
+
+
+                mydataX[ globle_i] = (int) (2*length_ofpath*Math.cos(angle360));
+                mydataY[ globle_i] = (int) (2*length_ofpath*Math.sin(angle360));
+
+            v.invalidate();
+
+
             console_tv.setText(previousString2+""+previousString1+""+data);
-          //  console_tv.setText(previousString8+"\n"+previousString7+"\n"+previousString6+"\n"+previousString5+"\n"+previousString4+"\n"+previousString3+"\n"+previousString2+"\n"+previousString1+"\n"+data);
+//  console_tv.setText(previousString8+"\n"+previousString7+"\n"+previousString6+"\n"+previousString5+"\n"+previousString4+"\n"+previousString3+"\n"+previousString2+"\n"+previousString1+"\n"+data);
 //            previousString8=previousString7;
 //            previousString7=previousString6;
 //            previousString6=previousString5;
@@ -295,6 +325,8 @@ public class MainActivity extends AppCompatActivity {
             previousString1=data;
 
         }
+
+        globle_i++;
     }
 
 
@@ -421,8 +453,7 @@ public class MainActivity extends AppCompatActivity {
         Paint paint = new Paint();
         int randomX=0;
         int randomY=0;
-        int[] mydataX = new int[101];
-        int[] mydataY = new int[101];
+
         int min = 100;
         int max = 480;
         public Paint mPaint;
@@ -459,17 +490,25 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
+
+        Point start_point;
+        Rect frameToDraw;
+        RectF whereToDraw;
+        int Y0 ;
+        int X0;
+
+
         @Override
         public void onDraw(Canvas canvas) {
             int w;
             int h;
             h = 280;
             w = 600;
-            int Y0 = canvas.getHeight();
-            int X0 = canvas.getWidth()/2;
-            Point start_point= new Point(X0, Y0);
-            Rect frameToDraw = new Rect(0, 0, board.getWidth(),board.getHeight());
-            RectF whereToDraw = new RectF(0, 0, canvas.getWidth(), canvas.getHeight());
+           Y0 = canvas.getHeight();
+           X0 = canvas.getWidth()/2;
+           start_point= new Point(X0, Y0);
+             frameToDraw = new Rect(0, 0, board.getWidth(),board.getHeight());
+             whereToDraw = new RectF(0, 0, canvas.getWidth(), canvas.getHeight());
             canvas.drawBitmap(board,frameToDraw,whereToDraw, paint);
             int min = 0;
             int max = 280;
@@ -509,20 +548,10 @@ public class MainActivity extends AppCompatActivity {
 
             canvas.drawLine(start_point.x,start_point.y, (canvas.getWidth()/3), 100, paint);//start,end
 
-            for (int i = 1; i <10; i++) {
-                int next=i+1;
-                int This=i;
-                int previous=i-1;
-                getlocation();
-                mydataX[i] = randomX;
-                mydataY[i] = randomY;
-
-            }
-
             mydataX[0] = start_point.x;
             mydataY[0] = start_point.y;
 
-
+            canvas.drawLine(mydataX[0],mydataY[0],mydataX[1], mydataY[1], paint);
 //            for (int i = 0; i < X0 ; i++) {
 //                dataX[i + 1] = (i + 1) * X0 / 20;
 //                //dataX[i]=getlocation(10,100);
@@ -530,16 +559,16 @@ public class MainActivity extends AppCompatActivity {
 //                dataY[i] = dataY[i + 1];
 //            }
 
-            for (int i = 0; i < 10; i++) {
-                canvas.drawLine(mydataX[i], mydataY[i],mydataX[i+1], mydataY[i+1], paint);
+            for (int i = 1; i < globle_i-1; i++) {
+                canvas.drawLine(X0+mydataX[i], Y0+mydataY[i],X0+mydataX[i+1], Y0+mydataY[i+1], paint);
                 canvas.drawColor(Color.WHITE, PorterDuff.Mode.MULTIPLY);
-                try {
-                    Thread.sleep(10);
-                } catch (InterruptedException e) {
+                //try {
+             //       Thread.sleep(10);
+              //  } catch (InterruptedException e) {
                     // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-                invalidate();
+              //      e.printStackTrace();
+             //   }
+             // invalidate();
             }
 
 
