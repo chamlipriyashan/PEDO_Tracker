@@ -1,7 +1,6 @@
 
 package com.workspike.pedotracker.pedotrackerv1.my_clases;
 
-import android.app.Activity;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattService;
 import android.content.BroadcastReceiver;
@@ -11,23 +10,33 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.pm.ActivityInfo;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Point;
+import android.graphics.PointF;
+import android.graphics.PorterDuff;
+import android.graphics.Rect;
+import android.graphics.RectF;
 import android.os.Handler;
 import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.workspike.pedotracker.pedotrackerv1.BluetoothLeService;
-import com.workspike.pedotracker.pedotrackerv1.DrawDynamicPathActivity;
 import com.workspike.pedotracker.pedotrackerv1.draw_traking_path_test.DrawVectorActivity;
-import com.workspike.pedotracker.pedotrackerv1.draw_traking_path_test.ManualMapDraw;
 import com.workspike.pedotracker.pedotrackerv1.Test2Activity;
 import com.workspike.pedotracker.pedotrackerv1.not_used.DeviceControlActivity;
 import com.workspike.pedotracker.pedotrackerv1.DeviceScanActivity;
@@ -37,6 +46,7 @@ import com.workspike.pedotracker.pedotrackerv1.SampleGattAttributes;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity {
@@ -45,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
     String bt_device_name=" ";
     String bt_device_id=" ";
     static String fulltext="testttttttttttttttttttttttttttttttttttttstststststststststtsstst";
-   TextView myTextView;
+   TextView console_tv;
     ScrollView consolescroll;
     public static final String EXTRAS_DEVICE_NAME = "DEVICE_NAME";
     public static final String EXTRAS_DEVICE_ADDRESS = "DEVICE_ADDRESS";
@@ -111,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
     };
 
     private void clearUI() {
-        tv_console.setText(R.string.no_data);
+        console_tv.setText(R.string.no_data);
     }
 
 
@@ -127,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         TextView status = (TextView) findViewById(R.id.connected_status);
         tv_console = (TextView) findViewById(R.id.tv_console);
-        myTextView = (TextView) findViewById(R.id.tv_pconsole);
+        console_tv = (TextView) findViewById(R.id.tv_pconsole);
         consolescroll =(ScrollView) findViewById(R.id.consolescroll);
        // mConnectionState = (TextView) findViewById(R.id.connection_state);
         this.setRequestedOrientation(
@@ -142,6 +152,14 @@ public class MainActivity extends AppCompatActivity {
                startActivity(i);
             }
         });
+
+
+        RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.canvas2);
+        RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.FILL_PARENT);
+        MainActivity.HeartGraphView v = new MainActivity.HeartGraphView(this);
+        v.setLayoutParams(lp);
+        relativeLayout.addView(v);
+
 
         Intent intent = getIntent();
         bt_device_name= intent.getStringExtra(EXTRAS_DEVICE_NAME);
@@ -161,10 +179,6 @@ public class MainActivity extends AppCompatActivity {
         bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
 
 
-
-        for (int i = 0; i < 100; i++) {
-            arr.add("0");
-        }
 
 
     }
@@ -223,10 +237,7 @@ public class MainActivity extends AppCompatActivity {
                 mBluetoothLeService.disconnect();
                 return true;
 
-            case R.id.action_manualdraw:
-                final Intent intent = new Intent(this, ManualMapDraw.class);
-                startActivity(intent);
-                return true;
+
 
 
             case R.id.action_vector_draw:
@@ -239,10 +250,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent3);
                 return true;
 
-            case R.id.action_test2:
-               final Intent intent4 = new Intent(this, DrawDynamicPathActivity.class);
-                startActivity(intent4);
-                return true;
 
             case android.R.id.home:
                 onBackPressed();
@@ -261,25 +268,31 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    ArrayList<String> arr= new ArrayList<String>(100);
-
+    String previousString1="";
+    String previousString2="";
+//    String previousString3="";
+//    String previousString4="";
+//    String previousString5="";
+//    String previousString6="";
+//    String previousString7="";
+//    String previousString8="";
 
     private void displayData(String data) {
 
         if (data != null) {
 
-                String previousString = myTextView.getText().toString();
-                String nextString = previousString + "\n" + data;
-               // myTextView.setText(nextString);
-            if(nextString.length()>1100){
 
-                myTextView.append(nextString,(nextString.length()-100),(nextString.length()));
-                consolescroll.fullScroll(View.FOCUS_DOWN);
-               // System.out.println("g");
-            }else{
-                myTextView.setText(nextString);
-                consolescroll.fullScroll(View.FOCUS_DOWN);
-            }
+            console_tv.setText(previousString2+""+previousString1+""+data);
+          //  console_tv.setText(previousString8+"\n"+previousString7+"\n"+previousString6+"\n"+previousString5+"\n"+previousString4+"\n"+previousString3+"\n"+previousString2+"\n"+previousString1+"\n"+data);
+//            previousString8=previousString7;
+//            previousString7=previousString6;
+//            previousString6=previousString5;
+//
+//            previousString5=previousString4;
+//            previousString4=previousString3;
+//            previousString3=previousString2;
+            previousString2=previousString1;
+            previousString1=data;
 
         }
     }
@@ -306,6 +319,23 @@ public class MainActivity extends AppCompatActivity {
 
             if(SampleGattAttributes.lookup(uuid, unknownServiceString) == "HM 10 Serial") {
                 System.out.println("Yes, serial :-)");
+                try {
+                    Thread.sleep(20);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+
+                currentServiceData.put(LIST_UUID, uuid);
+                gattServiceData.add(currentServiceData);
+
+                // get characteristic when UUID matches RX/TX UUID
+                characteristicTX = gattService.getCharacteristic(BluetoothLeService.UUID_HM_RX_TX);
+                characteristicRX = gattService.getCharacteristic(BluetoothLeService.UUID_HM_RX_TX);
+
+
+
+                makeChange(2);
             } else {
                 System.out.println("No, serial :-(");
             }
@@ -345,12 +375,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 // TODO Auto-generated method stub
-                makeChange();
+                makeChange(1);
             }
         });
     }
     // on change of bars write char
-    private void makeChange() {
+    private void makeChange(int x) {
         String str = SendValue + "\n";
         Log.d(TAG, "Sending result=" + SendValue);
         //Log.d(TAG, "Sending result=" + str);
@@ -363,18 +393,175 @@ public class MainActivity extends AppCompatActivity {
                 characteristicTX.setValue(String.valueOf(str));
                 mBluetoothLeService.writeCharacteristic(characteristicTX);
                 mBluetoothLeService.setCharacteristicNotification(characteristicRX, true);
-                byte[] val;
+                byte[] val;//this is used to send value to the device
 
 
-                //  System.out.println( fulltext);
-                // val=characteristicRX.getValue();
-                // String s=new String(val.toString());
-                // System.out.println(s);
-
-
+                if(x==2){
+                    System.out.println("teeeeeee");
+                    characteristicTX.setValue(String.valueOf("test"));
+                    mBluetoothLeService.writeCharacteristic(characteristicTX);
+                    mBluetoothLeService.setCharacteristicNotification(characteristicRX, true);
+                }
             }
         }
     }
+
+
+
+    public class HeartGraphView extends View {
+        public HeartGraphView(Context context) {
+            super(context);
+            // TODO Auto-generated constructor stub
+            Init_floor_map();
+        }
+
+
+        Bitmap board;
+        int i=0;
+        Paint paint = new Paint();
+        int randomX=0;
+        int randomY=0;
+        int[] mydataX = new int[101];
+        int[] mydataY = new int[101];
+        int min = 100;
+        int max = 480;
+        public Paint mPaint;
+        public Canvas mCanvas;
+        int startX;
+        int startY;
+        int endX;
+        int endY;
+        private PointF startPoint, endPoint;
+
+        private void Init_floor_map() {
+
+            board= BitmapFactory.decodeResource(getResources(),R.drawable.floor1map);
+            paint.setColor(Color.BLUE);
+        }
+
+
+        int[] dataX = new int[30];
+        int[] dataY = new int[30];
+
+        public int generatRandomPositiveNegitiveValue(int max, int min) {
+            Random r = new Random();
+            int ii = r.nextInt(max - min + 1) + min;
+            return (ii - 140);
+        }
+
+
+        public void getlocation() {
+            randomX=generatRandomPositiveNegitiveValue(max, min);
+            randomY=generatRandomPositiveNegitiveValue(max, min);
+
+          //  System.out.println("get location");
+           // return (ii - 140);
+
+        }
+
+        @Override
+        public void onDraw(Canvas canvas) {
+            int w;
+            int h;
+            h = 280;
+            w = 600;
+            int Y0 = canvas.getHeight();
+            int X0 = canvas.getWidth()/2;
+            Point start_point= new Point(X0, Y0);
+            Rect frameToDraw = new Rect(0, 0, board.getWidth(),board.getHeight());
+            RectF whereToDraw = new RectF(0, 0, canvas.getWidth(), canvas.getHeight());
+            canvas.drawBitmap(board,frameToDraw,whereToDraw, paint);
+            int min = 0;
+            int max = 280;
+
+            paint.setStrokeWidth(6);
+
+
+
+ //************************************************Graph plotin********************perfect*************************************
+     /*
+
+            dataX[0] = 0;
+            for (int i = 0; i < w / 20 - 1; i++) {
+                dataX[i + 1] = (i + 1) * w / 20;
+                getlocation();
+                dataY[w / 20 - 1] = generatRandomPositiveNegitiveValue(max, min);
+                dataY[i] = dataY[i + 1];
+            }
+
+            for (int i = 0; i < w / 20 - 1; i++) {
+                // apply some transformation on data in order to map it correctly
+                // in the coordinates of the canvas
+                canvas.drawLine(dataX[i], h / 2 - dataY[i], dataX[i + 1], h / 2 - dataY[i + 1], paint);
+                canvas.drawColor(Color.WHITE, PorterDuff.Mode.MULTIPLY);
+//                try {
+//                    Thread.sleep(10);
+//                } catch (InterruptedException e) {
+//                    // TODO Auto-generated catch block
+//                    e.printStackTrace();
+//                }
+                invalidate();
+            }
+*/
+//************************************************Graph plotin********************perfect*************************************
+
+
+
+            canvas.drawLine(start_point.x,start_point.y, (canvas.getWidth()/3), 100, paint);//start,end
+
+            for (int i = 1; i <10; i++) {
+                int next=i+1;
+                int This=i;
+                int previous=i-1;
+                getlocation();
+                mydataX[i] = randomX;
+                mydataY[i] = randomY;
+
+            }
+
+            mydataX[0] = start_point.x;
+            mydataY[0] = start_point.y;
+
+
+//            for (int i = 0; i < X0 ; i++) {
+//                dataX[i + 1] = (i + 1) * X0 / 20;
+//                //dataX[i]=getlocation(10,100);
+//                dataY[X0 / 20 - 1] = generatRandomPositiveNegitiveValue(max, min);
+//                dataY[i] = dataY[i + 1];
+//            }
+
+            for (int i = 0; i < 10; i++) {
+                canvas.drawLine(mydataX[i], mydataY[i],mydataX[i+1], mydataY[i+1], paint);
+                canvas.drawColor(Color.WHITE, PorterDuff.Mode.MULTIPLY);
+                try {
+                    Thread.sleep(10);
+                } catch (InterruptedException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+                invalidate();
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        }
+    }
+
 
 
 

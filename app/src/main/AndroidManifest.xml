@@ -54,14 +54,9 @@
             android:name=".DeviceScanActivity"
             android:label="Scan Trackers"
             android:theme="@style/AppTheme" />
-        <activity android:name=".draw_traking_path_test.DrawManualActivity" />
-        <activity android:name=".draw_traking_path_test.ManualMapDraw" />
         <activity android:name=".draw_traking_path_test.DrawVectorActivity" />
         <activity android:name=".Test2Activity"
             android:label="Test2"/>
-        <activity android:name=".DrawDynamicPathActivity">
-
-        </activity>
     </application>
 
 </manifest>

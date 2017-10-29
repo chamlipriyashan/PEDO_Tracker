@@ -22,10 +22,7 @@
         android:title="" />
 
 
-    <item android:id="@+id/action_manualdraw"
-        android:icon="@android:drawable/ic_menu_help"
-        android:title="Manual Draw"
-        app:showAsAction="never"/>
+
 
     <item android:id="@+id/action_vector_draw"
         android:icon="@android:drawable/ic_menu_help"
@@ -36,10 +33,7 @@
         android:icon="@android:drawable/ic_menu_help"
         android:title="test1"
         app:showAsAction="never"/>
-    <item android:id="@+id/action_test2"
-        android:icon="@android:drawable/ic_menu_help"
-        android:title="Vector Draw"
-        app:showAsAction="never"/>
+
 
 
 

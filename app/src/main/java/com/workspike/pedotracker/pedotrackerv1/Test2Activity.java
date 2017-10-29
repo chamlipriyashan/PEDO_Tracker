@@ -8,10 +8,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Point;
 import android.graphics.PorterDuff;
+import android.graphics.Rect;
+import android.graphics.RectF;
 import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -211,11 +216,20 @@ public class Test2Activity extends AppCompatActivity {
         });
     }
 
+
+    String previousString1="";
+    String previousString2="";
+
     private void displayData(String data) {
 
         if (data != null) {
-            tv_console.append(data);
-             System.out.println(data);//**********************************************************************************
+
+
+            tv_console.setText(previousString2+"\n"+previousString1+"\n"+data);
+
+
+            previousString2=previousString1;
+            previousString1=data;
         }
     }
 
@@ -223,62 +237,86 @@ public class Test2Activity extends AppCompatActivity {
 
 
 
-
     public class HeartGraphView extends View {
+
+        private List<Point> mPoints = new ArrayList<Point>();
+        private Paint mPaint;
+        int min = 100;
+        int max = 480;
+        Bitmap board;
+        int randomX=0;
+        int randomY=0;
+        int[] mydataX = new int[101];
+        int[] mydataY = new int[101];
+
+
+        void init(){
+            board= BitmapFactory.decodeResource(getResources(),R.drawable.floor1map);
+            Point p1 = new Point(20, 20);
+            Point p2 = new Point(100, 100);
+            mPoints.add(p1);
+            mPoints.add(p2);
+        }
         public HeartGraphView(Context context) {
             super(context);
             // TODO Auto-generated constructor stub
+            init();
         }
 
-        int[] dataX = new int[30];
-        int[] dataY = new int[30];
+
 
         public int generatRandomPositiveNegitiveValue(int max, int min) {
             Random r = new Random();
             int ii = r.nextInt(max - min + 1) + min;
-            return (ii - 140);
+            return (ii );
         }
 
 
-        public int getlocation(int max, int min) {
-            Random r = new Random();
-            int ii = r.nextInt(max - min + 1) + min;
-            return (ii - 140);
+        public void getlocation() {
+            randomX=generatRandomPositiveNegitiveValue(max, min);
+            randomY=generatRandomPositiveNegitiveValue(max, min);
         }
 
         @Override
         public void onDraw(Canvas canvas) {
-            int w;
-            int h;
-            h = 280;
-            w = 600;
+            init();
+            int Y0 = canvas.getHeight();
+            int X0 = canvas.getWidth()/2;
+            Point start_point= new Point(X0, Y0);
 
-            //Generate random
-            int min = 0;
-            int max = 280;
-
+            mPaint = new Paint();
+            mPaint.setAntiAlias(true);
+            mPaint.setDither(true);
+            mPaint.setColor(Color.BLUE);
             Paint paint = new Paint();
             paint.setColor(Color.RED);
             paint.setStrokeWidth(6);
-            dataX[0] = 0;
-            for (int i = 0; i < w / 20 - 1; i++) {
-                dataX[i + 1] = (i + 1) * w / 20;
-                //dataX[i]=getlocation(10,100);
-                dataY[w / 20 - 1] = generatRandomPositiveNegitiveValue(max, min);
-                dataY[i] = dataY[i + 1];
+
+            Rect frameToDraw = new Rect(0, 0, board.getWidth(),board.getHeight());
+            RectF whereToDraw = new RectF(0, 0, canvas.getWidth(), canvas.getHeight());
+            canvas.drawBitmap(board,frameToDraw,whereToDraw, paint);
+            canvas.drawLine(start_point.x,start_point.y, (canvas.getWidth()/3), 100, mPaint);//start,end
+
+            for (int i = 1; i <10; i++) {
+                getlocation();
+                mydataX[i] = randomX;
+                mydataY[i] = randomY;
+
             }
 
-            for (int i = 0; i < w / 20 - 1; i++) {
-                // apply some transformation on data in order to map it correctly
-                // in the coordinates of the canvas
-                canvas.drawLine(dataX[i], h / 2 - dataY[i], dataX[i + 1], h / 2 - dataY[i + 1], paint);
+            mydataX[0] = start_point.x;
+            mydataY[0] = start_point.y;
+
+
+            for (int i = 0; i < 10; i++) {
+                canvas.drawLine(mydataX[i], mydataY[i],mydataX[i+1], mydataY[i+1], paint);
                 canvas.drawColor(Color.WHITE, PorterDuff.Mode.MULTIPLY);
-//                try {
-//                    Thread.sleep(10);
-//                } catch (InterruptedException e) {
-//                    // TODO Auto-generated catch block
-//                    e.printStackTrace();
-//                }
+                try {
+                    Thread.sleep(10);
+                } catch (InterruptedException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
                 invalidate();
             }
 
